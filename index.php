@@ -1,13 +1,11 @@
 <?php
 session_start();
 
-// Redirect to login if user not logged in
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit;
 }
 
-// Personal Information
 $personal_info = [
     "name" => "Ian Emmanuel Comia",
     "phone" => "+639926251615",
@@ -15,13 +13,11 @@ $personal_info = [
     "location" => "Taysan, Batangas"
 ];
 
-// Summary
 $summary = "A computer science undergraduate with experience in programming and development using Python, Java,
 C++, and C#. With a good foundation in AI and data science with practical work on LangChain, Google Gemini
 API, and regression modeling techniques. Demonstrates strong problem-solving skills, adaptability, and a proven
 ability to learn new technologies quickly.";
 
-// Technical Skills
 $skills = [
     "Programming Languages" => "Experienced with C#, Java; Proficient with Python, C++",
     "Data Analysis & Visualization" => "Matplotlib, Pandas",
@@ -29,7 +25,6 @@ $skills = [
     "Databases" => "MySQL, MongoDB"
 ];
 
-// Projects
 $projects = [
     [
         "title" => "FarmEase - AI-Powered Agricultural E-Commerce Platform (March 2025 - May 2025)",
@@ -49,7 +44,6 @@ $projects = [
     ]
 ];
 
-// Education
 $education = [
     [
         "institution" => "Batangas State University",

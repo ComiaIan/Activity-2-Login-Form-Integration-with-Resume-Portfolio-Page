@@ -1,9 +1,9 @@
 <?php
 $host = "127.0.0.1";
 $port = "5432";
-$dbname = "";
-$user = "";
-$password = "";
+$dbname = "cv_app";
+$user = "cv_user";
+$password = "yourpassword";
 
 try {
     $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
