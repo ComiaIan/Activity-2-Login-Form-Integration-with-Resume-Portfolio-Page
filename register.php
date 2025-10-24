@@ -3,23 +3,35 @@ session_start();
 require 'db.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = trim($_POST["name"]);
+    $username = trim($_POST["username"]);
     $email = trim($_POST["email"]);
     $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
-    // Check if email exists
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
-    $stmt->execute(['email' => $email]);
+    // Check if email or username already exists
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email OR username = :username");
+    $stmt->execute(['email' => $email, 'username' => $username]);
+
     if ($stmt->rowCount() > 0) {
-        $error = "Email already registered!";
+        $error = "Username or email already registered!";
     } else {
-        $stmt = $pdo->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
-        $stmt->execute(['name' => $name, 'email' => $email, 'password' => $password]);
-        $_SESSION['user'] = $name;
+        // Insert new user into the database
+        $stmt = $pdo->prepare("INSERT INTO users (username, email, password_hash) VALUES (:username, :email, :password_hash)");
+        $stmt->execute([
+            'username' => $username,
+            'email' => $email,
+            'password_hash' => $password
+        ]);
+
+        // Log the user in automatically
+        $_SESSION['username'] = $username;
+        $_SESSION['email'] = $email;
+
+        // Redirect to the homepage or dashboard
         header("Location: index.php");
         exit;
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -229,7 +241,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form method="POST">
             <div class="input-group">
                 <label for="name">Full Name</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="username" required>
             </div>
             
             <div class="input-group">
